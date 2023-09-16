@@ -1,0 +1,75 @@
+[package]
+name = "hello"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+static = ["sys/static", "linked"]
+loaded = ["libloading"]
+linked = ["sys/linked"]
+mint = ["sys/mint"]
+yvr = []
+oculus = []
+default = ["loaded"]
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+nalgebra = "0.32.3" # transformations
+cargo-apk = "0.9.7" # android building
+android-activity = { version = "0.4", features = ["native-activity"] } # self explanatory, sort of required?
+android_logger = "0.11.0" # debug
+log = "0.4.14" # also debug
+ash = { version = "0.37", default-features = false, features = ["loaded"] } # vulkan
+ctrlc = "3.1.5" # exit commmand
+openxr = "0.17.1" # openxr for muy duro rendering
+sys = { package = "openxr-sys", version = "0.9.3" } # openxr sys
+libloading = { version = "0.8", optional = true } # libloading
+
+[target.'cfg(target_os = "android")'.dependencies]
+ndk-context = "0.1"
+
+[package.metadata.android]
+package = "net.flamgop.launcher"
+apk_name = "test"
+build_targets = ["aarch64-linux-android"]
+runtime_libs = "src/libs"
+
+[package.metadata.android.sdk]
+min_sdk_version = 21
+target_sdk_version = 30
+
+[[package.metadata.android.uses_feature]]
+name = "android.hardware.vulkan.level"
+required = true
+version = 1
+
+[[package.metadata.android.queries.provider]]
+authorities = "org.khronos.openxr.runtime_broker;org.khronos.openxr.system_runtime_broker"
+name = "org.khronos.openxr"
+
+[package.metadata.android.application.activity]
+theme = "@android:style/Theme.Black.NoTitleBar.Fullscreen"
+config_changes = "density|keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|uiMode"
+launch_mode = "singleTask"
+orientation = "landscape"
+resizeable_activity = false
+
+[[package.metadata.android.application.meta_data]]
+name = "com.samsung.android.vr.application.mode"
+value = "vr_only"
+
+[[package.metadata.android.application.meta_data]]
+name = "com.yvr.intent.category.VR"
+value = "vr_only"
+
+[[package.metadata.android.application.activity.intent_filter]]
+actions = ["android.intent.action.MAIN"]
+categories = [
+    "com.oculus.intent.category.VR",
+    "com.yvr.intent.category.VR",
+    "android.intent.category.LAUNCHER",
+]

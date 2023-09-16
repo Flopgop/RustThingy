@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "type": "cargo",
+            "name": "run static",
+            "cargoArgs": [ "run", "--features", "loaded" ],
+        },
+        {
+            "type": "cargo",
+            "name": "apk yvr",
+            "cargoArgs": [ "+nightly", "apk", "build", "--features", "loaded,yvr" ],
+            "environment": {
+                "ANDROID_SDK_ROOT": "$USER_HOME$\\AppData\\Local\\Android\\Sdk",
+                "ANDROID_NDK_ROOT": "$USER_HOME$\\AppData\\Local\\Android\\Sdk\\ndk\\25.2.9519653",
+            },
+        },
+        {
+            "type": "cargo",
+            "name": "apk oculus",
+            "cargoArgs": [ "+nightly", "apk", "build", "--features", "loaded,oculus" ],
+            "environment": {
+                "ANDROID_SDK_ROOT": "$USER_HOME$\\AppData\\Local\\Android\\Sdk",
+                "ANDROID_NDK_ROOT": "$USER_HOME$\\AppData\\Local\\Android\\Sdk\\ndk\\25.2.9519653",
+            },
+        },
+    ]
+}

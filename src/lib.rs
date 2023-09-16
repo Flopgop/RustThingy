@@ -423,9 +423,7 @@ fn android_main(_app: AndroidApp) {
         .system(xr::FormFactor::HEAD_MOUNTED_DISPLAY)
         .unwrap();
     
-    let environment_blend_mode = xr_instance
-        .enumerate_environment_blend_modes(system, xr::ViewConfigurationType::PRIMARY_STEREO)
-        .unwrap()[0];
+    let environment_blend_mode = xr::EnvironmentBlendMode::OPAQUE;
     
     let vk_target_version = vk::make_api_version(0,1,1,0);
     let vk_target_version_xr = xr::Version::new(1,1,0);
@@ -835,7 +833,8 @@ fn android_main(_app: AndroidApp) {
 
             if !session_running {
                 // Don't grind up the CPU
-                std::thread::sleep(Duration::from_millis(100));
+                // std::thread::sleep(Duration::from_millis(100));
+                // TODO: teehee I'm grinding up the cpu
                 continue;
             }
 
